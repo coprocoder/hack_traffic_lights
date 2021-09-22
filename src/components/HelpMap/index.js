@@ -33,14 +33,21 @@ class HelpMap extends Component {
                 GetCharts()
                     .then(resp => { console.log(resp.data); this.setState({charts: resp.data}) })      
             })
-
     }
 
     setRoute = (data) => {
         this.setState({ route: data })
     }
+    changeCat = (cat) => {
+        GetServerPoints(cat)
+            .then(resp => {
+                console.log('GetServerPoints changeCat', resp)
+                this.setState({points: resp.data}) 
+            })
+    }
 
     render(){
+        // console.log('this.state.points', this.state.points)
         return(
             <div className="helpMap-view">
                 <Map 
@@ -49,6 +56,7 @@ class HelpMap extends Component {
                     charts = {this.state.charts}
                 />
                 <MapGeocoder 
+                    changeCat={this.changeCat}
                     setRoute={this.setRoute}
                 />
             </div>
@@ -109,22 +117,28 @@ class MapGeocoder extends Component {
                 // console.log('geodata', resp)
                 let items = []
                 resp.data.hits.map( (res, i) => { 
-                    let text = ''
-                    // text = res.postcode ? text + res.postcode + ', ' : text
-                    // text = res.state ? text + res.state + ', ' : text
-                    text = res.city ? text + res.city + ', ' : text 
-                    text = res.street ? text + res.street + ', ' : text 
-                    text = res.house_number ? text + res.house_number + ', ' : text 
-                    text = res.name ? text + res.name : text 
-                    // text = res.housenumber ? text + res.housenumber  : text 
-                    
-                    items.push(Object.assign({}, res, { id: i, value: text, label: text }))
-                    // items.push({ id: i, value: text, label: text })
+                    if(res.city == "Krasnoyarsk") {
+                        let text = ''
+                        // text = res.postcode ? text + res.postcode + ', ' : text
+                        // text = res.state ? text + res.state + ', ' : text
+                        // text = res.city ? text + res.city + ', ' : text 
+                        text = res.street ? text + res.street + ', ' : text 
+                        text = res.house_number ? text + res.house_number + ', ' : text 
+                        // text = res.housenumber ? text + res.housenumber  : text 
+                        text = res.name ? text + res.name : text 
+                        
+                        items.push(Object.assign({}, res, { id: i, value: text, label: text }))
+                    }
                 })
                 this.setState({ addrList: items })
                 resolve(items)
             })
         )
+    }
+
+    selectCategory(e){
+        this.setState({ category: e.currentTarget.value})
+        this.props.changeCat(e.currentTarget.value)
     }
 
     render(){
@@ -133,33 +147,13 @@ class MapGeocoder extends Component {
 
         let categories = this.state.categories.map((item) => {
             return <label key={item.id}>
-                        <input name="category" type="radio" value={item.id} 
-                            onChange={(e) => this.setState({ category: e.currentTarget.value})}
+                        <input name="category" type="radio" value={item.id} onChange={e => this.selectCategory(e)}
                         />{item.name}
                     </label>
         })
 
         return(
-            <form className="helpMap-geocoder" onSubmit={(e) => this.handleSubmit(e)}> 
-                {/* <Select
-                    value={this.state.selectedAddrBegin}
-                    onChange={item => this.setState({selectedAddrBegin: item})}
-                    onInputChange={(value) => {
-                        this.getSelectAddrList(value)
-                        if(this.state.addrList)
-                            this.setState({selectedAddrBegin: this.state.addrList[0]})
-                    }}
-                    options={this.state.addrList}
-                    isClearable
-                />
-                <Select
-                    value={this.state.selectedAddrEnd}
-                    onChange={item => this.setState({selectedAddrEnd: item})}
-                    onInputChange={this.getSelectAddrList}
-                    options={this.state.addrList}
-                    isClearable
-                /> */}
-                
+            <form className="helpMap-geocoder" onSubmit={(e) => this.handleSubmit(e)}>               
                 <AsyncSelect
                     cacheOptions
                     defaultOptions

@@ -3,8 +3,10 @@ import axios from 'axios';
 import config from '../config'
 const server = config.server
 
-const GetServerPoints = async () => {
+const GetServerPoints = async (user_config) => {
     let url = 'https://my-api43.herokuapp.com/api/points'
+    if(!!user_config)
+        url += "?user_config=" + user_config
     return await axios.get(url)
 }
 

@@ -64,21 +64,32 @@ class Map extends React.PureComponent {
                 source: 'light_points',
                 paint: {
                     'circle-radius': 4,
-                    'circle-color': '#6f66a6'
+                    'circle-color': [
+                        "case",
+                        ['==', ['get', "is_accepted"], true], "#33FFB0",
+                        ['==', ['get', "is_accepted"], false], "#FC8C7F",
+                        '#6f66a6'
+                    ],
+      
                 }
             })
 
             // Маршрут на карте
             this.map.addSource('route_path', {
                 type: 'geojson',
-                data: this.props.route_geoJson
+                data: this.props.route_geoJson ? 
+                    this.props.route_geoJson :  // Путь
+                    { "type": "FeatureCollection", "features": [] } // Заглушка
             })
+
             this.map.addLayer({
                 id: 'route_path',
                 type: 'line',
                 source: 'route_path',
                 paint: {
-                    'line-color': '#6f66a6',
+                    // 'line-color': '#6f66a6',
+                    'line-color': '#06450B',
+                    'line-width': 4
                 }
             })
 
@@ -117,9 +128,8 @@ class Map extends React.PureComponent {
     }
 
     componentDidUpdate() {
-        // console.log('componentDidUpdate', this.props)
+        this.map.getSource('light_points').setData(this.props.points_geoJson)
         if (this.props.route_geoJson) {
-            // console.log('this.props.route_geoJson', this.props.route_geoJson)
             this.map.getSource('route_path').setData(this.props.route_geoJson)
         }
     }

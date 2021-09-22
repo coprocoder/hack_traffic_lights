@@ -44,7 +44,6 @@ class MobileApp extends Component {
     }
 
     componentDidMount(){
-      document.title = "Мобильное приложение"
       this.initScreenSlider()
 
       console.log('mobile_app props', this.props)
