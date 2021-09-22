@@ -92,7 +92,7 @@ class HomePlatformSelector extends Component {
         <div className='home-download-overlay'>
           <div className="home-download-center">
             <div className="home-download-content">
-              <h4>Безопасный маршрут</h4>
+              <h4>Easy Go</h4>
               <div className="home-download-mainPlatformBtn">
                 {/* <button className="home-download-linkWebBtn" onClick={() => { window.location.href = "/profile" }}>Веб-версия</button>  */}
                 <div >

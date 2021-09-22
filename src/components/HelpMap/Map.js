@@ -95,8 +95,8 @@ class Map extends React.PureComponent {
 
             // Координаты
             this.map.on('mousemove', (e) => {
-                document.getElementById('map-coordinates').innerHTML =
-                    e.lngLat.lng.toFixed(4) + ' ' + e.lngLat.lat.toFixed(4);
+                // document.getElementById('map-coordinates').innerHTML =
+                //     e.lngLat.lng.toFixed(4) + ' ' + e.lngLat.lat.toFixed(4);
             });
         })
 
@@ -128,9 +128,12 @@ class Map extends React.PureComponent {
     }
 
     componentDidUpdate() {
-        this.map.getSource('light_points').setData(this.props.points_geoJson)
-        if (this.props.route_geoJson) {
+        console.log('map update', this.props)
+        if(this.props.route_geoJson) {
             this.map.getSource('route_path').setData(this.props.route_geoJson)
+        }
+        if(!!this.props.points_geoJson.features[0].properties.is_accepted) {
+            this.map.getSource('light_points').setData(this.props.points_geoJson)
         }
     }
 
@@ -138,8 +141,8 @@ class Map extends React.PureComponent {
         const { lng, lat, zoom } = this.state;
         return (
             <div className="map-overlay">
-                <div id="map-coordinates" />
-                <div className="sidebar">Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}</div>
+                {/* <div id="map-coordinates" /> */}
+                {/* <div className="sidebar">Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}</div> */}
                 <div ref={this.mapContainer} className="map-container" />
             </div>
         );
