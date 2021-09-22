@@ -8,7 +8,10 @@ import ReactDOM from 'react-dom'
 import Map from './Map'
 import { 
     GetServerPoints,
-    GetGeocoderData 
+    GetGeocoderData,
+    GetRoute,
+    GetCategories,
+    GetCharts
 } from '../../db/repository'
 
 
@@ -18,7 +21,6 @@ class HelpMap extends Component {
     constructor(props){
       super(props);
       this.state = {
-          points: []
       }
     }
 
@@ -26,10 +28,15 @@ class HelpMap extends Component {
         GetServerPoints()
             .then(resp => {
                 console.log('GetServerPoints', resp)
-                this.setState({
-                    points: resp.data
-                })
+                this.setState({points: resp.data})  
+                GetCharts()
+                    .then(resp => { console.log(resp.data); this.setState({charts: resp.data}) })      
             })
+
+    }
+
+    setRoute = (data) => {
+        this.setState({ route: data })
     }
 
     render(){
@@ -38,8 +45,12 @@ class HelpMap extends Component {
                 <div id="map_coordinates" />
                 <Map 
                     points_geoJson = {this.state.points}
+                    route_geoJson = {this.state.route}
+                    charts = {this.state.charts}
                 />
-                <MapGeocoder />
+                <MapGeocoder 
+                    setRoute={this.setRoute}
+                />
             </div>
         )
     }
@@ -48,41 +59,80 @@ class HelpMap extends Component {
 class MapGeocoder extends Component {
     constructor(props){
       super(props);
-      this.state = {}
+      this.state = {
+        categories: []
+      }
     }
 
+    componentDidMount(){
+        GetCategories()
+            .then(resp => this.setState({categories: resp.data}))
+    }
     componentDidUpdate(){
-        console.log('state', this.state)
+        // console.log('state', this.state)
     }
 
     handleSubmit(e) {
         e.preventDefault();
-        // console.log('handleSubmit', e)
+        // console.log('handleSubmit e', e)
+        // console.log('handleSubmit state', this.state)
 
-        // отправить данные на сервер
-        // получить ответ
-        // отобразить на карте
+        let req_data = {
+            point_from: [this.state.selectedAddrBegin.point.lng, this.state.selectedAddrBegin.point.lat], 
+            point_to: [this.state.selectedAddrEnd.point.lng, this.state.selectedAddrEnd.point.lat], 
+            user_config: Number(this.state.category)
+        }
         
+        // отправить данные на сервер
+        GetRoute(req_data)
+            // получить ответ
+            .then(resp => {
+                // отобразить на карте
+                // console.log('GetRoute resp', resp.data.paths[0].points)
+                this.props.setRoute({
+                    "type": "FeatureCollection",
+                    "features": [
+                        {
+                        "type": "Feature",
+                        "geometry": resp.data.paths[0].points
+                        }
+                    ]
+                })
+            })
     }
 
     getSelectAddrList = (value) => {
         // console.log('getSelectAddrList', value, value.length, !!value)
         GetGeocoderData(value)
             .then(resp => {
-                console.log('geodata', resp)
+                // console.log('geodata', resp)
                 let items = []
                 resp.data.hits.map( (res, i) => { 
                     items.push(Object.assign({}, 
                         res, 
-                        { id: i, value: res.city + ', ' + res.name, label: res.city + ', ' + res.name })
+                        { 
+                            id: i,  
+                            label: res.city + ', ' + res.name 
+                        })
                     )
                 })
                 this.setState({ addrList: items })
             })
     }
 
+    onCatChanged = (e) => {
+        this.setState({
+            category: e.currentTarget.value
+        });
+    }
+
     render(){
-        console.error(this.state.addrList)
+        // console.log(this.state)
+
+        let categories = this.state.categories.map((item, index ) => {
+            return <label key={item.id}><input name="category" type="radio" value={item.id} onChange={this.onCatChanged}/>{item.name}</label>
+        })
+
         return(
             <form className="helpMap-geocoder" onSubmit={(e) => this.handleSubmit(e)}> 
                 <Select
@@ -97,6 +147,7 @@ class MapGeocoder extends Component {
                     onInputChange={this.getSelectAddrList}
                     options={this.state.addrList}
                 />
+                {categories}
                 <input type="submit" 
                     className="helpMap-geocoder-field" 
                     value="Построить машрут"

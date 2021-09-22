@@ -16,6 +16,26 @@ const GetGeocoderData = async (query) => {
     return await axios.get(geo_url)
 }
 
+const GetRoute =  async (data) => {
+    console.log('GetRoute', data)
+
+    return await axios.post(
+        server + "/get_route/", 
+        data
+    )
+}
+
+const GetCategories = async () => {
+    let url = server + "/get_people_types"
+    return await axios.get(url)
+}
+
+const GetCharts = async () => {
+    let url = server + "/get_chars/"
+    return await axios.get(url)
+}
+
+
 // const UploadImg =  async (data) => {
 //     console.log('UpdateImg', data)
 
@@ -78,7 +98,11 @@ const GetGeocoderData = async (query) => {
 export { 
     // === Server ===
     GetServerPoints,
+    GetRoute,
+    GetCategories,
+    GetCharts,
 
     // === GraphHopper ===
     GetGeocoderData,
+    
 }
