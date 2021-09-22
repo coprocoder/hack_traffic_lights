@@ -19,11 +19,10 @@ import {
   mobile_section
 } from './texts';
 
+import Map1 from '../../images/home/Map1.png'
+import Map2 from '../../images/home/Map2.png'
+import Map3 from '../../images/home/Map3.png'
 import BrowserBorder from '../../images/home/browser_border.png'
-import HomeDiarImg from '../../images/home/Diary.png'
-import HomeHelpMapImg from '../../images/home/HelpMap.png'
-import HomeProfileImg from '../../images/home/Profile.png'
-import HomeSchedulerImg from '../../images/home/Scheduler.png'
 
 import './home.scss';
 
@@ -85,7 +84,7 @@ class HomePlatformSelector extends Component {
   }
 
   render() {
-    let screen_data = [ HomeDiarImg, HomeHelpMapImg, HomeProfileImg, HomeSchedulerImg ]
+    let screen_data = [ Map1, Map2, Map3 ]
 
     return (
       <div className="home-download">
@@ -198,7 +197,7 @@ class HomeHeader extends Component {
               smooth={true}
               offset={-42}
               duration={500}
-            ><label>Войти</label></Link>
+            ><label>Главная</label></Link>
           </div>
           <div className="home-navigation-item">
             <Link activeClass="active"

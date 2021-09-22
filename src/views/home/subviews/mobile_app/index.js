@@ -9,20 +9,19 @@ import ImgSlider from '../../../../components/Slider/ImgSlider'
 import './mobile.scss';
 
 // Icons by paragraph
-import MiniImgDnevnik    from '../../../../images/mobile_app/icons/dnevnik.png'
-import MiniImgDrop       from '../../../../images/mobile_app/icons/drop.png'
-import MiniImgDialysis   from '../../../../images/mobile_app/icons/dialysis.png'
-import MiniImgDrugs      from '../../../../images/mobile_app/icons/drugs.png'
-import MiniImgDocs       from '../../../../images/mobile_app/icons/docs.png'
-import MiniImgFeather    from '../../../../images/mobile_app/icons/feather.png'
+import MiniWay    from '../../../../images/mobile_app/icons/way.png'
+import MiniSelect       from '../../../../images/mobile_app/icons/select.png'
+import MiniSos   from '../../../../images/mobile_app/icons/sos.png'
+import MiniMarkers   from '../../../../images/mobile_app/icons/markers.png'
 
 // Screens by slider
-import ScreenImg1    from '../../../../images/mobile_app/screen/12.png'
-import ScreenImg2    from '../../../../images/mobile_app/screen/22.png'
-import ScreenImg3    from '../../../../images/mobile_app/screen/32.png'
-import ScreenImg4    from '../../../../images/mobile_app/screen/42.png'
-import ScreenImg5    from '../../../../images/mobile_app/screen/52.png'
-import ScreenImg6    from '../../../../images/mobile_app/screen/62.png'
+import ScreenImg1    from '../../../../images/mobile_app/screen/1.png'
+import ScreenImg2    from '../../../../images/mobile_app/screen/2.png'
+import ScreenImg3    from '../../../../images/mobile_app/screen/3.png'
+import ScreenImg4    from '../../../../images/mobile_app/screen/4.png'
+import ScreenImg5    from '../../../../images/mobile_app/screen/5.png'
+import ScreenImg6    from '../../../../images/mobile_app/screen/6.png'
+import ScreenImg7    from '../../../../images/mobile_app/screen/7.png'
 
 import AppleStoreImg     from '../../../../images/mobile_app/store/apple_store.png'
 import GoogleStoreImg    from '../../../../images/mobile_app/store/google_store.png'
@@ -35,7 +34,7 @@ class MobileApp extends Component {
     }
 
     initScreenSlider(){
-      let screen_data = [ ScreenImg1, ScreenImg2, ScreenImg3, ScreenImg4, ScreenImg5, ScreenImg6 ]
+      let screen_data = [ ScreenImg1, ScreenImg2, ScreenImg3, ScreenImg4, ScreenImg5, ScreenImg6, ScreenImg7 ]
       this.setState({mobile_imgs: 
         <div className="ImageStickySlider">
           <ImgSlider img_class="mobile_app_img" data={screen_data}/>
@@ -48,12 +47,10 @@ class MobileApp extends Component {
 
       console.log('mobile_app props', this.props)
       this.text_sections = [
-        { Icon: MiniImgDnevnik, text: 'Пациент может вносить показатели состояния здоровья в соответствующем разделе группы "Дневник здоровья". К показателям относятся артериальное давление, пульс и температура' },
-        { Icon: MiniImgDrop,    text: 'В разделе "баланс жидкости" пользователь может следить за введенной и выведенной жидкостью в течение суток/недели/месяца' },
-        { Icon: MiniImgDialysis,text: 'В приложении предусмотрен раздел "дневниик диализа", где пациент может делать записи об автоматическом или ручном диализе' },
-        { Icon: MiniImgDrugs,   text: 'Чтобы не забыть о приеме необходимых лекарств, есть раздел "Прием медикаментов", где можно запланировать прием, сделать запись о незапланированном приеме а также просмотреть историю приема медикаментов' },
-        { Icon: MiniImgDocs,    text: 'Также в приложении доступна возможность хранить результаты анализов в удобном формате' },
-        { Icon: MiniImgFeather, text: 'Если вам нужно рассказать о чем-то, что не предусмотрено в приложении, вы можете написать заметку в свободной форме, а наши врачи ее увидят' }
+        { Icon: MiniWay, text: 'Пользователь может указать начальный и конечный адрес для построения безопасного маршрута' },
+        { Icon: MiniSelect,   text: 'Также в приложении есть возможность указать пользователю свою категорию для более более точного расчёта маршрута на основе анализа данных о пешеходных переходах' },
+        { Icon: MiniSos,    text: 'Если пользователю необходима помощь, он может оповестить об этом других пользователей в разделе "помощь".' },
+        { Icon: MiniMarkers,text: 'Также в этом разделе пользователь может видеть оповещения от других пользователей. Это позволяет оказать своевременную помощь' },
       ]
       console.log(this.text_sections)
     }
