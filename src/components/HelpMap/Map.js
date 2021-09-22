@@ -8,9 +8,9 @@ class Map extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            lng: 92.9,
-            lat: 56,
-            zoom: 9
+            lng: 92.8520,
+            lat: 56.0130,
+            zoom: 14.3
         };
         this.points = []
         this.mapContainer = React.createRef();
@@ -24,11 +24,10 @@ class Map extends React.PureComponent {
             style: 'mapbox://styles/nzaycev/cksl9h0iu09fy18pg7yeljl4q',
             center: [lng, lat],
             zoom: zoom,
-            maxBounds: [[
-                92.013069, 55.623443
-            ], [
-                93.919682, 56.673527
-            ]]
+            maxBounds: [
+                [92.013069, 55.623443], 
+                [93.919682, 56.673527]
+            ]
         });
 
         this.map.on('move', () => {
@@ -51,9 +50,8 @@ class Map extends React.PureComponent {
             })
         );
 
-
         this.map.on('load', () => {
-            console.log('features', this.props.points_geoJson)
+            // console.log('features', this.props.points_geoJson)
 
             // Светофоры на карте
             this.map.addSource('light_points', {
@@ -94,12 +92,10 @@ class Map extends React.PureComponent {
         // === Маркеры на поинтах === 
         let areaPopup
         this.map.on('mouseenter', 'light_points', (e) => {
-            console.log('mouseenter', e.features)
+            // console.log('mouseenter', e.features)
             let characteristics = e.features[0].properties.characteristics.replace('[', '').replace(']', '').split(',')
             characteristics = characteristics.map((ch_id, index) => {
-                console.log('111', this.props.charts, ch_id)
                 let ch = this.props.charts.filter(chart => chart.id == ch_id)[0]
-                console.log('ch', ch)
                 if (ch)
                     return `<li>${ch.name}</li>`
             })
@@ -118,17 +114,14 @@ class Map extends React.PureComponent {
             if (!!areaPopup == true)
                 areaPopup.remove()
         })
-
     }
 
     componentDidUpdate() {
         // console.log('componentDidUpdate', this.props)
-
         if (this.props.route_geoJson) {
             // console.log('this.props.route_geoJson', this.props.route_geoJson)
             this.map.getSource('route_path').setData(this.props.route_geoJson)
         }
-
     }
 
     render() {

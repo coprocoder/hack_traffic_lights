@@ -101,35 +101,37 @@ class MapGeocoder extends Component {
     }
 
     getSelectAddrList = (value) => {
-        // console.log('getSelectAddrList', value, value.length, !!value)
+        // console.log('getSelectAddrList', value)
         GetGeocoderData(value)
             .then(resp => {
                 // console.log('geodata', resp)
                 let items = []
                 resp.data.hits.map( (res, i) => { 
-                    items.push(Object.assign({}, 
-                        res, 
-                        { 
-                            id: i,  
-                            label: res.city + ', ' + res.name 
-                        })
-                    )
+                    let text = ''
+                    text = res.postcode ? text + res.postcode + ', ' : text
+                    text = res.state ? text + res.state + ', ' : text
+                    text = res.city ? text + res.city + ', ' : text 
+                    text = res.street ? text + res.street + ', ' : text 
+                    text = res.house_number ? text + res.house_number + ', ' : text 
+                    text = res.name ? text + res.name : text 
+                    // text = res.housenumber ? text + res.housenumber  : text 
+                    
+                    // items.push(Object.assign({}, res, { id: i, value: text, label: text }))
+                    items.push({ id: i, value: text, label: text })
                 })
                 this.setState({ addrList: items })
             })
     }
 
-    onCatChanged = (e) => {
-        this.setState({
-            category: e.currentTarget.value
-        });
-    }
-
     render(){
-        // console.log(this.state)
+        console.log('geocoder addrList', this.state.addrList)
 
-        let categories = this.state.categories.map((item, index ) => {
-            return <label key={item.id}><input name="category" type="radio" value={item.id} onChange={this.onCatChanged}/>{item.name}</label>
+        let categories = this.state.categories.map((item) => {
+            return <label key={item.id}>
+                        <input name="category" type="radio" value={item.id} 
+                            onChange={(e) => this.setState({ category: e.currentTarget.value})}
+                        />{item.name}
+                    </label>
         })
 
         return(
@@ -139,6 +141,7 @@ class MapGeocoder extends Component {
                     onChange={item => this.setState({selectedAddrBegin: item})}
                     onInputChange={this.getSelectAddrList}
                     options={this.state.addrList}
+                    isClearable
                 />
                 <Select
                     value={this.state.selectedAddrEnd}
