@@ -64,8 +64,8 @@ $GrayDarkAccent: #949494;
             margin-top: 40px;
             background: $GrayAccent;
             height: calc(100vh - 42px);
-            justify-content: space-evenly;
-            align-content: space-evenly;
+            grid-row-gap: 30px;
+            align-content: center;
         
             .home-download-overlay {
                 max-width: 600px;
