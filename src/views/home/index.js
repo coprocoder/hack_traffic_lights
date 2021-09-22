@@ -213,7 +213,7 @@ class HomeHeader extends Component {
               to={ mobile_section.section }
               spy={true}
               smooth={true}
-              offset={-42}
+              offset={-70}
               duration={500}
             ><label>Приложение</label></Link>
           </div>
