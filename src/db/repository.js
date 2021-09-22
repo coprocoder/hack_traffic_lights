@@ -12,7 +12,7 @@ const GetGeocoderData = async (query) => {
     let key = "e4c820ba-37c0-4801-9bba-3b559cea39ab"
     let my_query = 'Красноярск, ' + query
     let geo_url = "https://graphhopper.com/api/1/geocode?q="+my_query+"&type=json&locale=ru&debug=true&key="+key
-    // console.log('GetGeocoderData geo_url', geo_url)
+    console.log('GetGeocoderData geo_url', geo_url)
     return await axios.get(geo_url)
 }
 

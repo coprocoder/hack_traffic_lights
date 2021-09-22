@@ -2,6 +2,7 @@
 
 import React, {Component, PropTypes} from 'react';
 import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 import Search from 'react-search'
 import ReactDOM from 'react-dom'
 
@@ -68,6 +69,7 @@ class MapGeocoder extends Component {
             .then(resp => this.setState({categories: resp.data}))
     }
     componentDidUpdate(){
+        // console.log('geocoder addrList', this.state.addrList)
         // console.log('state', this.state)
     }
 
@@ -102,29 +104,32 @@ class MapGeocoder extends Component {
 
     getSelectAddrList = (value) => {
         // console.log('getSelectAddrList', value)
-        GetGeocoderData(value)
+        return new Promise((resolve, reject) => GetGeocoderData(value)
             .then(resp => {
                 // console.log('geodata', resp)
                 let items = []
                 resp.data.hits.map( (res, i) => { 
                     let text = ''
-                    text = res.postcode ? text + res.postcode + ', ' : text
-                    text = res.state ? text + res.state + ', ' : text
+                    // text = res.postcode ? text + res.postcode + ', ' : text
+                    // text = res.state ? text + res.state + ', ' : text
                     text = res.city ? text + res.city + ', ' : text 
                     text = res.street ? text + res.street + ', ' : text 
                     text = res.house_number ? text + res.house_number + ', ' : text 
                     text = res.name ? text + res.name : text 
                     // text = res.housenumber ? text + res.housenumber  : text 
                     
-                    // items.push(Object.assign({}, res, { id: i, value: text, label: text }))
-                    items.push({ id: i, value: text, label: text })
+                    items.push(Object.assign({}, res, { id: i, value: text, label: text }))
+                    // items.push({ id: i, value: text, label: text })
                 })
                 this.setState({ addrList: items })
+                resolve(items)
             })
+        )
     }
 
     render(){
         console.log('geocoder addrList', this.state.addrList)
+        // alert(this.state.addrList)
 
         let categories = this.state.categories.map((item) => {
             return <label key={item.id}>
@@ -136,10 +141,14 @@ class MapGeocoder extends Component {
 
         return(
             <form className="helpMap-geocoder" onSubmit={(e) => this.handleSubmit(e)}> 
-                <Select
+                {/* <Select
                     value={this.state.selectedAddrBegin}
                     onChange={item => this.setState({selectedAddrBegin: item})}
-                    onInputChange={this.getSelectAddrList}
+                    onInputChange={(value) => {
+                        this.getSelectAddrList(value)
+                        if(this.state.addrList)
+                            this.setState({selectedAddrBegin: this.state.addrList[0]})
+                    }}
                     options={this.state.addrList}
                     isClearable
                 />
@@ -148,6 +157,24 @@ class MapGeocoder extends Component {
                     onChange={item => this.setState({selectedAddrEnd: item})}
                     onInputChange={this.getSelectAddrList}
                     options={this.state.addrList}
+                    isClearable
+                /> */}
+                
+                <AsyncSelect
+                    cacheOptions
+                    defaultOptions
+                    loadOptions={this.getSelectAddrList}
+                    onInputChange={this.getSelectAddrList}
+                    onChange={item => this.setState({selectedAddrBegin: item})}
+                    isClearable
+                />
+                <AsyncSelect
+                    cacheOptions
+                    defaultOptions
+                    loadOptions={this.getSelectAddrList}
+                    onInputChange={this.getSelectAddrList}
+                    onChange={item => this.setState({selectedAddrEnd: item})}
+                    isClearable
                 />
                 {categories}
                 <input type="submit" 
