@@ -78,7 +78,7 @@ class Map extends React.PureComponent {
             this.map.addSource('route_path', {
                 type: 'geojson',
                 data: this.props.route_geoJson ? 
-                    this.props.route_geoJson :  // Путь
+                    this.props.route_geoJson.route :  // Путь
                     { "type": "FeatureCollection", "features": [] } // Заглушка
             })
 
@@ -130,7 +130,7 @@ class Map extends React.PureComponent {
     componentDidUpdate() {
         console.log('map update', this.props)
         if(this.props.route_geoJson) {
-            this.map.getSource('route_path').setData(this.props.route_geoJson)
+            this.map.getSource('route_path').setData(this.props.route_geoJson.route)
         }
         if(!!this.props.points_geoJson.features[0].properties.is_accepted) {
             this.map.getSource('light_points').setData(this.props.points_geoJson)
@@ -143,6 +143,13 @@ class Map extends React.PureComponent {
             <div className="map-overlay">
                 {/* <div id="map-coordinates" /> */}
                 {/* <div className="sidebar">Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}</div> */}
+                {this.props.route_geoJson ? 
+                    <div className="map-route-info">
+                        <div>{(this.props.route_geoJson.distance/1000).toFixed(2)} км.</div>
+                        <div>{(this.props.route_geoJson.time/1000/60).toFixed(2)} мин.</div>
+                    </div>
+                : null}
+
                 <div ref={this.mapContainer} className="map-container" />
             </div>
         );

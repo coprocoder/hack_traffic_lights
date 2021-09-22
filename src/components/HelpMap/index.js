@@ -6,6 +6,10 @@ import AsyncSelect from 'react-select/async';
 import Search from 'react-search'
 import ReactDOM from 'react-dom'
 
+// FontAwesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+
 import Map from './Map'
 import { 
     GetServerPoints,
@@ -68,7 +72,8 @@ class MapGeocoder extends Component {
     constructor(props){
       super(props);
       this.state = {
-        categories: []
+        categories: [],
+        hidden: false,
       }
     }
 
@@ -97,15 +102,20 @@ class MapGeocoder extends Component {
             // получить ответ
             .then(resp => {
                 // отобразить на карте
-                // console.log('GetRoute resp', resp.data.paths[0].points)
+                console.log('GetRoute resp', resp)
+                let info = resp.data.paths[0]
                 this.props.setRoute({
-                    "type": "FeatureCollection",
-                    "features": [
-                        {
-                        "type": "Feature",
-                        "geometry": resp.data.paths[0].points
-                        }
-                    ]
+                    route: {
+                        "type": "FeatureCollection",
+                        "features": [
+                            {
+                            "type": "Feature",
+                            "geometry": info.points
+                            }
+                        ]
+                    }, 
+                    distance: info.distance, 
+                    time: info.time
                 })
             })
     }
@@ -141,6 +151,10 @@ class MapGeocoder extends Component {
         this.props.changeCat(e.currentTarget.value)
     }
 
+    toggleViewMode = () => {
+        this.setState({hidden: !this.state.hidden})
+    }
+
     render(){
         console.log('geocoder addrList', this.state.addrList)
         // alert(this.state.addrList)
@@ -153,29 +167,43 @@ class MapGeocoder extends Component {
         })
 
         return(
-            <form className="helpMap-geocoder" onSubmit={(e) => this.handleSubmit(e)}>               
-                <AsyncSelect
-                    cacheOptions
-                    defaultOptions
-                    loadOptions={this.getSelectAddrList}
-                    onInputChange={this.getSelectAddrList}
-                    onChange={item => this.setState({selectedAddrBegin: item})}
-                    isClearable
-                />
-                <AsyncSelect
-                    cacheOptions
-                    defaultOptions
-                    loadOptions={this.getSelectAddrList}
-                    onInputChange={this.getSelectAddrList}
-                    onChange={item => this.setState({selectedAddrEnd: item})}
-                    isClearable
-                />
-                {categories}
-                <input type="submit" 
-                    className="helpMap-geocoder-field" 
-                    value="Построить машрут"
-                />
-            </form>
+
+            <div className="helpMap-geocoder">
+                { this.state.hidden ? 
+                    <div className="helpMap-geocoder-hidden">
+                        <button onClick={this.toggleViewMode}><FontAwesomeIcon icon={faChevronRight} /></button>
+                    </div> :
+                    <div className="helpMap-geocoder-visible">
+                        <div className="helpMap-geocoder-header">
+                            <button onClick={this.toggleViewMode}><FontAwesomeIcon icon={faChevronLeft} /></button>
+                            <label>Геокодер</label>
+                        </div>
+                        <form className="helpMap-geocoder-form" onSubmit={(e) => this.handleSubmit(e)}>             
+                            <AsyncSelect
+                                cacheOptions
+                                defaultOptions
+                                loadOptions={this.getSelectAddrList}
+                                onInputChange={this.getSelectAddrList}
+                                onChange={item => this.setState({selectedAddrBegin: item})}
+                                isClearable
+                            />
+                            <AsyncSelect
+                                cacheOptions
+                                defaultOptions
+                                loadOptions={this.getSelectAddrList}
+                                onInputChange={this.getSelectAddrList}
+                                onChange={item => this.setState({selectedAddrEnd: item})}
+                                isClearable
+                            />
+                            {categories}
+                            <input type="submit" 
+                                className="helpMap-geocoder-field" 
+                                value="Построить машрут"
+                            />
+                        </form>
+                    </div>
+                }
+            </div>
         )
     }
 
