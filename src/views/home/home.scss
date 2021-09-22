@@ -60,7 +60,7 @@ $GrayDarkAccent: #949494;
             display: flex;
             flex-flow: wrap;
             align-items: center;
-            justify-content: center;
+            justify-content: space-around;
             margin-top: 40px;
             background: $GrayAccent;
             height: calc(100vh - 42px);

@@ -34,11 +34,25 @@ class Home extends Component {
 
   componentDidMount() {
     document.title = "Главная"
-    console.log('Home props', this.props)
+    console.log('Home props', this.props, document.documentElement.scrollHeight)
+    window.addEventListener('scroll', this.listenToScroll)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.listenToScroll)
   }
 
   componentDidUpdate() {
     console.log('home props', this.props)
+  }
+
+  listenToScroll = () => {
+    const winScroll = document.documentElement.scrollTop
+      // document.body.scrollTop
+
+    this.setState({
+      scroll_btn_hidden: winScroll < 100 ? false : true,
+    })
   }
 
   render() {
@@ -46,7 +60,7 @@ class Home extends Component {
       <div className="home-view">
         <HomeHeader />
         <HomeContent />
-        <SctollToTopBtn />
+        {this.state.scroll_btn_hidden ? <SctollToTopBtn /> : null}
       </div>
     )
   }
