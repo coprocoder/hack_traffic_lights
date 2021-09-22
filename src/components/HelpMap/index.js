@@ -42,7 +42,6 @@ class HelpMap extends Component {
     render(){
         return(
             <div className="helpMap-view">
-                <div id="map_coordinates" />
                 <Map 
                     points_geoJson = {this.state.points}
                     route_geoJson = {this.state.route}

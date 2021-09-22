@@ -86,7 +86,7 @@ class Map extends React.PureComponent {
 
             // Координаты
             this.map.on('mousemove', (e) => {
-                document.getElementById('map_coordinates').innerHTML =
+                document.getElementById('map-coordinates').innerHTML =
                     e.lngLat.lng.toFixed(4) + ' ' + e.lngLat.lat.toFixed(4);
             });
         })
@@ -96,18 +96,13 @@ class Map extends React.PureComponent {
         this.map.on('mouseenter', 'light_points', (e) => {
             console.log('mouseenter', e.features)
             let characteristics = e.features[0].properties.characteristics.replace('[', '').replace(']', '').split(',')
-            console.log('characteristics 1', characteristics, this.props)
-
             characteristics = characteristics.map((ch_id, index) => {
                 console.log('111', this.props.charts, ch_id)
                 let ch = this.props.charts.filter(chart => chart.id == ch_id)[0]
                 console.log('ch', ch)
                 if (ch)
                     return `<li>${ch.name}</li>`
-
             })
-            console.log('characteristics 2', characteristics)
-            console.log('222', <ul>${characteristics}</ul>)
 
             if (!!areaPopup == true)
                 areaPopup.remove()
@@ -140,6 +135,7 @@ class Map extends React.PureComponent {
         const { lng, lat, zoom } = this.state;
         return (
             <div className="map-overlay">
+                <div id="map-coordinates" />
                 <div className="sidebar">Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}</div>
                 <div ref={this.mapContainer} className="map-container" />
             </div>
