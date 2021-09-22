@@ -1,0 +1,71 @@
+$BlueAccent: #cde7ff;
+$BlueDarkAccent: #9ed0ff;
+
+
+.home-mobile {
+    margin: auto;
+
+    .home-mobile-content {
+        position: relative;
+        display: grid;
+        grid-template-columns: 70% 30%;
+        padding-top: 30px;
+        object-fit: scale-down;
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+        
+        .home-mobile-desctiption {
+            .home-mobile-content-row {
+                display: flex;
+                align-items: end;
+                .home-mobile-content-icon {
+                    margin: 10px;
+                    width: 40px;
+                    filter: opacity(0.5) drop-shadow(0 0 0 $BlueAccent) brightness(0.67) saturate(4.5);
+                }
+                .home-mobile-content-text {
+                    margin: 5px;
+                }   
+            }
+        }
+    }
+    .home-mobile-store {
+        position: relative;
+        display: flex;
+        height: 50px;
+        width: 100%;
+        margin: auto;    
+        padding: 30px 0;
+        justify-content: center;
+
+        a {
+            img {
+                height: 100%;
+                // width: 100%;
+            }
+            &:active {
+                transform: scale(0.98);
+                transition: transform .1s ease-out;
+            }
+        }
+    }
+    .home-mobile-line {
+        height: 4px;
+        width: 80%;
+        background: $BlueAccent;
+        border-radius: 2px;
+        margin: 10px 0;
+        margin-left: 10%;
+        margin-bottom: 50px;
+        text-align: left;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .home-mobile {
+        .home-mobile-content{
+            grid-template-columns: 100%;
+        }
+    }
+}
