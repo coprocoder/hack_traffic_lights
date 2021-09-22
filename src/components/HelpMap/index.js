@@ -91,6 +91,13 @@ class MapGeocoder extends Component {
         // console.log('handleSubmit e', e)
         // console.log('handleSubmit state', this.state)
 
+        if(!!!this.state.selectedAddrBegin)
+            return alert("Введите начальный адрес")
+        if(!!!this.state.selectedAddrEnd)
+            return alert("Введите конечный адрес")
+        if(!!!this.state.category)
+            return alert("Выберите категорию")
+
         let req_data = {
             point_from: [this.state.selectedAddrBegin.point.lng, this.state.selectedAddrBegin.point.lat], 
             point_to: [this.state.selectedAddrEnd.point.lng, this.state.selectedAddrEnd.point.lat], 
@@ -156,7 +163,7 @@ class MapGeocoder extends Component {
     }
 
     render(){
-        console.log('geocoder addrList', this.state.addrList)
+        // console.log('geocoder addrList', this.state.addrList)
         // alert(this.state.addrList)
 
         let categories = this.state.categories.map((item) => {

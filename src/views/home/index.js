@@ -43,7 +43,7 @@ class Home extends Component {
   }
 
   componentDidUpdate() {
-    console.log('home props', this.props)
+    // console.log('home props', this.props)
   }
 
   listenToScroll = () => {
