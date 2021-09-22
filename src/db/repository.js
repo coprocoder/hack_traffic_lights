@@ -3,26 +3,32 @@ import axios from 'axios';
 import config from '../config'
 const server = config.server
 
+const GetServerPoints = async () => {
+    let url = 'https://my-api43.herokuapp.com/api/points'
+    return await axios.get(url)
+}
+
 const GetGeocoderData = async (query) => {
     let key = "e4c820ba-37c0-4801-9bba-3b559cea39ab"
-    let my_query = 'Красноярск,' + query
-    let geo_url = "https://graphhopper.com/api/1/geocode?q="+my_query+"&locale=ru&debug=true&key="+key
-    console.log('GetGeocoderData geo_url', geo_url)
+    let my_query = 'Красноярск, ' + query
+    let geo_url = "https://graphhopper.com/api/1/geocode?q="+my_query+"&type=json&locale=ru&debug=true&key="+key
+    // console.log('GetGeocoderData geo_url', geo_url)
     return await axios.get(geo_url)
 }
-const UploadImg =  async (data) => {
-    console.log('UpdateImg', data)
 
-    return await axios.post(
-        server + "/files/upload_img", 
-        data, 
-        {
-            headers: {
-                "Content-type": "multipart/form-data"
-            },
-        }
-    )
-}
+// const UploadImg =  async (data) => {
+//     console.log('UpdateImg', data)
+
+//     return await axios.post(
+//         server + "/files/upload_img", 
+//         data, 
+//         {
+//             headers: {
+//                 "Content-type": "multipart/form-data"
+//             },
+//         }
+//     )
+// }
 
 // const DownloadFiles =  (data) => {
 //     console.log('DownloadFiles data', data)
@@ -70,6 +76,9 @@ const UploadImg =  async (data) => {
 
 
 export { 
-    GetGeocoderData, 
-    UploadImg
+    // === Server ===
+    GetServerPoints,
+
+    // === GraphHopper ===
+    GetGeocoderData,
 }

@@ -8,7 +8,7 @@ import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 
 // Components
 import SctollToTopBtn from '../../components/Buttons/ScrollToTopBtn'
-import HelpMap from '../../components/Widgets/HelpMap'
+import HelpMap from '../../components/HelpMap'
 import ImgSlider from '../../components/Slider/ImgSlider'
 
 
@@ -214,7 +214,7 @@ class HomeHeader extends Component {
               to={ mobile_section.section }
               spy={true}
               smooth={true}
-              offset={0}
+              offset={-42}
               duration={500}
             ><label>Приложение</label></Link>
           </div>
