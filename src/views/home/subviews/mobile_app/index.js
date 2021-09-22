@@ -91,9 +91,9 @@ class MobileApp extends Component {
           </div>
 
           {/* Ссылка на пользовательское соглашение под разделительной полоской */}
-          <div className="home-mobile-line">
-            {/* <a href="/get_licence" target="_blank" rel="noreferrer" >Пользовательское соглашение</a> */}
-          </div>
+          {/* <div className="home-mobile-line">
+            <a href="/get_licence" target="_blank" rel="noreferrer" >Пользовательское соглашение</a>
+          </div> */}
         </div>
       )
     }
